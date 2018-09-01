@@ -1,6 +1,10 @@
-module Model exposing (Model, init)
+module Models exposing (Message(..), Model, init)
 
 import Diceware
+
+
+type Message
+    = NewPassword
 
 
 type alias Model =
@@ -12,5 +16,5 @@ type alias Model =
 init : Model
 init =
     { wordlist = Diceware.wordlist
-    , password = Just (List.take 8 Diceware.wordlist)
+    , password = Nothing
     }

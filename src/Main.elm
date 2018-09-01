@@ -1,38 +1,25 @@
-module Main exposing (Msg(..), main, update, view)
+module Main exposing (main, update)
 
 import Browser
-import Html exposing (Html, button, h1, li, ol, text)
-import Html.Events exposing (onClick)
-import Model exposing (Model)
+import Diceware
+import Models exposing (Message(..), Model)
+import Views
 
 
-main : Program () Model Msg
+main : Program () Model Message
 main =
     Browser.document
-        { init = \_ -> ( Model.init, Cmd.none )
-        , view = \model -> { title = "Senha Simples", body = view model }
+        { init = \_ -> ( Models.init, Cmd.none )
+        , view = Views.page
         , update = update
         , subscriptions = \_ -> Sub.none
         }
 
 
-type Msg
-    = NewPassword
-
-
-update : Msg -> Model -> ( Model, Cmd Msg )
-update _ model =
-    ( model, Cmd.none )
-
-
-view : Model -> List (Html Msg)
-view { password } =
-    case password of
-        Just words ->
-            [ h1 [] [ text "Sua senha:" ]
-            , ol [] <| List.map (\word -> li [] [ text word ]) words
-            , button [] [ text "gerar" ]
-            ]
-
-        Nothing ->
-            []
+update : Message -> Model -> ( Model, Cmd Message )
+update msg model =
+    case msg of
+        NewPassword ->
+            ( { model | password = Just (List.take 3 Diceware.wordlist) }
+            , Cmd.none
+            )
