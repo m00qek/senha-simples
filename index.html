@@ -8,6 +8,12 @@
   </head>
 
   <body>
-    <script>var app = Elm.Main.init();</script>
+    <script>
+      var app = Elm.Main.init();
+      app.ports.generateRandomSeed.subscribe(function(size) {
+        var seed = window.crypto.getRandomValues(new Uint16Array(size));
+        app.ports.newSeed.send(Array.from(seed));
+      });
+    </script>
   </body>
 </html>

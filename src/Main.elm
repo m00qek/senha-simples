@@ -3,6 +3,7 @@ module Main exposing (main, update)
 import Browser
 import Diceware
 import Models exposing (Message(..), Model)
+import Password
 import Views
 
 
@@ -12,14 +13,17 @@ main =
         { init = \_ -> ( Models.init, Cmd.none )
         , view = Views.page
         , update = update
-        , subscriptions = \_ -> Sub.none
+        , subscriptions = \_ -> Password.newSeed NewSeed
         }
 
 
 update : Message -> Model -> ( Model, Cmd Message )
-update msg model =
-    case msg of
+update message model =
+    case message of
         NewPassword ->
-            ( { model | password = Just (List.take 3 Diceware.wordlist) }
+            ( model, Password.generateRandomSeed 8 )
+
+        NewSeed seed ->
+            ( { model | password = Just <| Password.from seed }
             , Cmd.none
             )
