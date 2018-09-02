@@ -13,6 +13,7 @@
       app.ports.generateRandomSeed.subscribe(function(size) {
         var seed = window.crypto.getRandomValues(new Uint16Array(size));
         app.ports.newSeed.send(Array.from(seed));
+	console.log(seed);
       });
     </script>
   </body>

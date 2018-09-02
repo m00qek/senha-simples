@@ -2,37 +2,23 @@ port module Password exposing (from, generateRandomSeed, newSeed)
 
 import Diceware
 import Dict
-import Models exposing (Message, Password, Seed)
+import Models exposing (Alphabet, Password, Seed)
 
 
 port generateRandomSeed : Int -> Cmd msg
 
 
-port newSeed : (List Int -> msg) -> Sub msg
+port newSeed : (Seed -> msg) -> Sub msg
 
 
-bla =
-    Diceware.wordlist
-        |> List.indexedMap (\index word -> ( index, word ))
-        |> Dict.fromList
+traverse : List (Maybe a) -> Maybe (List a)
+traverse =
+    List.foldr (Maybe.map2 (::)) (Just [])
 
 
-asd sera words =
-    case sera of
-        Just word ->
-            word :: words
-
-        Nothing ->
-            words
-
-
-from : Seed -> Password
-from seed =
-    let
-        len =
-            List.length Diceware.wordlist
-    in
+from : Alphabet -> Seed -> Maybe Password
+from { size, symbols } seed =
     seed
-        |> List.map (modBy len)
-        |> List.map (\key -> Dict.get key bla)
-        |> List.foldr asd []
+        |> List.map (modBy size)
+        |> List.map (\key -> Dict.get key symbols)
+        |> traverse

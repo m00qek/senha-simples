@@ -1,11 +1,22 @@
-module Diceware exposing (Word, wordlist)
+module Diceware exposing (alphabet)
+
+import Dict
+import Models exposing (Alphabet)
 
 
-type alias Word =
-    String
+alphabet : Alphabet
+alphabet =
+    { size = List.length wordlist
+    , symbols = indexedDict wordlist
+    }
 
 
-wordlist : List Word
+indexedDict list =
+    list
+        |> List.indexedMap (\index symbol -> ( index, symbol ))
+        |> Dict.fromList
+
+
 wordlist =
     [ "aba"
     , "abaco"

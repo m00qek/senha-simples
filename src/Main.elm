@@ -7,16 +7,6 @@ import Password
 import Views
 
 
-main : Program () Model Message
-main =
-    Browser.document
-        { init = \_ -> ( Models.init, Cmd.none )
-        , view = Views.page
-        , update = update
-        , subscriptions = \_ -> Password.newSeed NewSeed
-        }
-
-
 update : Message -> Model -> ( Model, Cmd Message )
 update message model =
     case message of
@@ -24,6 +14,26 @@ update message model =
             ( model, Password.generateRandomSeed 8 )
 
         NewSeed seed ->
-            ( { model | password = Just <| Password.from seed }
+            ( { model | password = Password.from model.alphabet seed }
             , Cmd.none
             )
+
+
+subscriptions : Model -> Sub Message
+subscriptions _ =
+    Password.newSeed NewSeed
+
+
+init : flags -> ( Model, Cmd Message )
+init _ =
+    update NewPassword { alphabet = Diceware.alphabet, password = Nothing }
+
+
+main : Program () Model Message
+main =
+    Browser.document
+        { init = init
+        , view = Views.page
+        , update = update
+        , subscriptions = subscriptions
+        }

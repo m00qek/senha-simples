@@ -1,6 +1,6 @@
-module Models exposing (Message(..), Model, Password, Seed, init)
+module Models exposing (Alphabet, Message(..), Model, Password, Seed)
 
-import Diceware
+import Dict exposing (Dict)
 
 
 type alias Seed =
@@ -11,19 +11,18 @@ type alias Password =
     List String
 
 
+type alias Alphabet =
+    { size : Int
+    , symbols : Dict Int String
+    }
+
+
 type Message
     = NewPassword
     | NewSeed Seed
 
 
 type alias Model =
-    { wordlist : Password
-    , password : Maybe (List Diceware.Word)
-    }
-
-
-init : Model
-init =
-    { wordlist = Diceware.wordlist
-    , password = Nothing
+    { alphabet : Alphabet
+    , password : Maybe Password
     }
