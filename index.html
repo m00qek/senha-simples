@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>Senha simples</title>
     <script type="text/javascript" src="senha-simples.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/normalize.css@8.0.0/normalize.css">
+    <link rel="stylesheet" href="styles.css">
   </head>
 
   <body>
@@ -13,7 +14,6 @@
       app.ports.generateRandomSeed.subscribe(function(size) {
         var seed = window.crypto.getRandomValues(new Uint16Array(size));
         app.ports.newSeed.send(Array.from(seed));
-	console.log(seed);
       });
     </script>
   </body>

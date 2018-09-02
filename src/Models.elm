@@ -8,7 +8,7 @@ type alias Seed =
 
 
 type alias Password =
-    List String
+    String
 
 
 type alias Alphabet =

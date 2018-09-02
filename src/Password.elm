@@ -22,3 +22,4 @@ from { size, symbols } seed =
         |> List.map (modBy size)
         |> List.map (\key -> Dict.get key symbols)
         |> traverse
+        |> Maybe.map (String.join " ")
